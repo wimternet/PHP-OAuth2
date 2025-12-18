@@ -474,7 +474,11 @@ class Client
         } else {
             $json_decode = json_decode($result, true);
         }
-        curl_close($ch);
+        
+		// Deprecated since PHP 8.0
+		if (PHP_VERSION_ID < 80000 && is_resource($this->curl)) {
+		    curl_close($this->curl);
+		}
 
         return array(
             'result' => (null === $json_decode) ? $result : $json_decode,
